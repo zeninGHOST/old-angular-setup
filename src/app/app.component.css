@@ -1,0 +1,45 @@
+
+/* app.component.scss */
+.example-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  
+  .example-sidenav {
+    width: 240px;
+  }
+  
+  .example-sidenav-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .example-toolbar {
+    padding: 0 16px;
+  }
+  
+  .example-app-name {
+    margin-left: 8px;
+  }
+  
+  .example-spacer {
+    flex: 1 1 auto;
+  }
+  
+  .example-content {
+    padding: 16px;
+    flex: 1; /* Allow content to expand and fill available space */
+    overflow-y: auto; /* Add scroll if content exceeds height */
+  }
+  
+  .example-search {
+    margin-left: 10px;
+  }
+  
+  .example-sidenav .mat-list-item {
+    cursor: pointer;
+  }
