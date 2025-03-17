@@ -1,0 +1,121 @@
+<!-- <div class="tasks-container">
+    <h2>Tasks</h2>
+    <p>Here you can manage your tasks.</p>
+  </div> -->
+
+
+  <div style="display: flex; justify-content: center;">
+    <mat-card style="flex: 2;">
+      <mat-card-title>Application Configuration</mat-card-title>
+      <mat-card-content>
+        <form [formGroup]="appForm" (ngSubmit)="onSubmit()">
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 100%; max-width: 600px;">
+              <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>App ID</mat-label>
+                <input matInput formControlName="appId" />
+              </mat-form-field>
+  
+              <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>Environment Type</mat-label>
+                <mat-select formControlName="envType">
+                  <mat-option *ngFor="let type of envTypes" [value]="type">
+                    {{ type }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+  
+          <ng-container formArrayName="metrics">
+            <div *ngFor="let metric of metricsFormArray.controls; let i = index" [formGroupName]="i.toString()">
+              <mat-card style="margin-bottom: 20px;">
+                <mat-card-title>
+                  Metric {{ i + 1 }}
+                  <button mat-icon-button (click)="toggleCollapse(i)">
+                    <mat-icon>{{ collapsedMetrics[i] ? 'expand_more' : 'expand_less' }}</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="removeMetric(i)" style="float: right;">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </mat-card-title>
+                <mat-card-content *ngIf="!collapsedMetrics[i]">
+                  <div style="display: flex; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 300px; padding-right: 10px;">
+                      <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>File System Type</mat-label>
+                        <mat-select formControlName="fileSystemType">
+                          <mat-option *ngFor="let type of fileSystemTypes" [value]="type">
+                            {{ type }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+  
+                      <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Alert Type</mat-label>
+                        <mat-select formControlName="alertType">
+                          <mat-option *ngFor="let type of alertTypes" [value]="type">
+                            {{ type }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+  
+                      <mat-form-field appearance="outline" *ngIf="metricsFormArray.at(i).get('alertType')?.value === 'email' || metricsFormArray.at(i).get('alertType')?.value === 'both'" style="width: 100%;">
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="email" />
+                      </mat-form-field>
+  
+                      <mat-form-field appearance="outline" *ngIf="metricsFormArray.at(i).get('alertType')?.value === 'slack' || metricsFormArray.at(i).get('alertType')?.value === 'both'" style="width: 100%;">
+                        <mat-label>Slack Webhook</mat-label>
+                        <input matInput formControlName="slack" />
+                      </mat-form-field>
+                    </div>
+  
+                    <div style="flex: 1; min-width: 300px; padding-left: 10px;">
+                      <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Condition</mat-label>
+                        <mat-select formControlName="condition">
+                          <mat-option *ngFor="let condition of conditions" [value]="condition">
+                            {{ condition }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+  
+                      <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Threshold</mat-label>
+                        <input matInput formControlName="threshold" />
+                        <mat-error *ngIf="metricsFormArray.at(i).get('threshold')?.hasError('required')">
+                          Threshold is required.
+                        </mat-error>
+                        <mat-error *ngIf="metricsFormArray.at(i).get('threshold')?.hasError('min') || metricsFormArray.at(i).get('threshold')?.hasError('max')">
+                          Threshold must be between 1 and 99.
+                        </mat-error>
+                      </mat-form-field>
+  
+                      <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Mount Path</mat-label>
+                        <input matInput formControlName="mountPath" />
+                        <mat-error *ngIf="metricsFormArray.at(i).get('mountPath')?.hasError('required')">
+                          Mount Path is required.
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </ng-container>
+  
+          <button mat-raised-button color="primary" type="button" (click)="addMetric()">
+            Add Metric
+          </button>
+  
+          <button mat-raised-button color="primary" type="submit" [disabled]="loading">
+            Submit
+          </button>
+  
+          <mat-spinner *ngIf="loading"></mat-spinner>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
